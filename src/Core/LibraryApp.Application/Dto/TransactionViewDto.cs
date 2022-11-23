@@ -14,6 +14,7 @@ namespace LibraryApp.Application.Dto
         public BookReadDto Book { get; set; }
         public MemberReadDto Member { get; set; }
         public DateTime CheckInDate { get; set; }
+        public double CezaBedeli { get; set; }
 
     }
 }

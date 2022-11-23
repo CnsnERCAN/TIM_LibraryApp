@@ -46,7 +46,44 @@ namespace LibraryApp.Persistence.Repositories
         public async Task<List<BookTransaction>> GetLast3DaysAsync(DateTime date)
         {
             date = date.AddDays(3); //CE: Günümüz tarihinden 3 sonrasını
-            return await dbContext.Set<BookTransaction>().Where(x => x.CheckInDate.Date <= date).ToListAsync() ?? throw new ArgumentNullException(nameof(date)); ;
+            var data = await dbContext.Set<BookTransaction>().Where(x => x.CheckInDate.Date <= date).ToListAsync() ?? throw new ArgumentNullException(nameof(date));
+            foreach (BookTransaction item in data)
+            {                
+                if (item.CheckInDate.Date < DateTime.Now.Date)
+                {
+                    int eksikGun = (DateTime.Now.Date - item.CheckInDate.Date).Days;
+                    if (eksikGun == 2)                    
+                        item.CezaBedeli = 0.2;                    
+                    if (eksikGun == 3)                    
+                        item.CezaBedeli = 0.4;                                        
+                    if(eksikGun > 3)
+                    {                        
+                        item.CezaBedeli = 0.4;
+                        
+                        for (int i = 4; i <= eksikGun; i++)
+                        {
+                            int fiboVal = getFiboValue(i);
+                            item.CezaBedeli += (fiboVal * 0.2);
+                        }
+                    }
+                }
+            }
+            return data;
+        }
+
+        private int getFiboValue(int eksikGun)
+        {
+            int val1 = 1;
+            int val2 = 1;
+            int val3 = 0;
+            for (int i = 0; i <= eksikGun; i++)
+            {
+                val3 = val1 + val2;
+                val1 = val2;
+                val2 = val3;
+            }
+
+            return val3;
         }
     }
 }

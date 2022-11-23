@@ -34,7 +34,7 @@ namespace LibraryApp.Application.Features.Commands.Transactions
 
             public async Task<ServiceResponse<BookTransaction>> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
             {
-                var transaction = mapper.Map<Domain.Entites.BookTransaction>(request);
+                var transaction = mapper.Map<BookTransaction>(request);
                 await transactionRepository.AddTransactionAsync(transaction);
                 return new ServiceResponse<BookTransaction>(transaction);
             }

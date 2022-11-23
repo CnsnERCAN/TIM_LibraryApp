@@ -20,5 +20,7 @@ namespace LibraryApp.Domain.Entites
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{DD.MM.YYYY}")]
         public DateTime CheckInDate { get; set; }
+
+        public double CezaBedeli { get; set; }
     }
 }
